@@ -1,0 +1,42 @@
+问题描述：将一个磁盘文件中的信息复制到另一个磁盘文件中。今要求将上例建立的file1.dat文件中的内容复制到另一个磁盘文件file2.dat中。
+解题思路：处理此问题的算法是：从file1.dat文件中逐个读入字符，然后逐个输出到file2.dat中。
+解题步骤：
+第一步：导入必要的库函数
+第二步：定义两个文件指针，输入打开的文件名
+第三步：打开文件
+第四步：复制
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int main()
+{
+	FILE *in,*out;
+	char filein[10], fileout[10];
+	printf("请输入读入数据的文件名：");
+	scanf("%s",filein);
+	printf("请输入输出（复制到）的文件名：");
+	scanf("%s",fileout);
+	
+	if((in = fopen(filein,"r"))==NULL)
+	{
+		printf("无法读取该文件或文件不存在！");
+		exit(0);
+	}
+	if((out = fopen(fileout,"w"))==NULL)
+	{
+		printf("无法打开该文件或磁盘内存不足！");
+		exit(0);
+	}
+	char ch;
+	while(!feof(in))
+	{
+		ch = fgetc(in);
+		fputc(ch, out);
+		putchar(ch);
+	}
+	fclose(in);
+	fclose(out);
+	putchar(10);
+	return 0;
+}
