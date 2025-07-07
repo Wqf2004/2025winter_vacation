@@ -37,7 +37,7 @@ for i in range(female_count):
 random.shuffle(students)
 
 # 写入文件
-with open("../dataset/a.txt", "w", encoding="utf-8") as f:
+with open("../dataset/a.txt", "w", encoding="gbk") as f:
     f.write("学号 姓名 性别 宿舍号码 电话号码\n")
     for gender, stu_id, name, dorm, phone in students:
         f.write(f"{stu_id} {name} {gender} {dorm} {phone}\n")

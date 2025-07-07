@@ -5,7 +5,7 @@
 #define MAX_STUDENTS 30
 #define MAX_LINE_LENGTH 100
 
-// å®šä¹‰å­¦ç”Ÿä¿¡æ¯ç»“æ„ä½“
+// Ñ§ÉúĞÅÏ¢½á¹¹Ìå
 typedef struct student
 {
 	char id[10];
@@ -15,17 +15,17 @@ typedef struct student
 	char phone[20];
 }Student;
 
-// å®šä¹‰æˆç»©ä¿¡æ¯ç»“æ„ä½“
+// ³É¼¨½á¹¹Ìå
 typedef struct grades
 {
-    char id[10];         // å­¦å·
-    char courseId[20];   // è¯¾ç¨‹ç¼–å·
-    char courseName[50]; // è¯¾ç¨‹åç§°
-    int credits;         // å­¦åˆ†
-    float usualScore;    // å¹³æ—¶æˆç»©
-    float labScore;      // å®éªŒæˆç»©
-    float examScore;     // å·é¢æˆç»©
-    float totalScore;    // ç»¼åˆæˆç»©
+    char id[10];         // Ñ§ÉúÑ§ºÅ
+    char courseId[20];   // ¿Î³Ì´úÂë
+    char courseName[50]; // ¿Î³ÌÃû×Ö
+    int credits;         // Ñ§·Ö
+    float usualScore;    // Æ½Ê±³É¼¨
+    float labScore;      // ÊµÑé³É¼¨
+    float examScore;     // ¾ÖÃæ³É¼¨
+    float totalScore;    // ×ÜÆÀ³É¼¨
 } Grades;
 
 int readStudentsFromFile(char *FileName, Student *pStu);
@@ -34,7 +34,7 @@ float calculateTotalScore(float usual, float lab, float exam);
 int calculateCredits(float credit, float totalScore);
 void addScoreRecord(char *FileName_A, char* FileName_B, Student *student);
 
-// ä¸»å‡½æ•°
+// Ö÷º¯Êı
 int main()
 {
     Student *pStu = (Student *)malloc(MAX_STUDENTS * sizeof(Student));
@@ -43,21 +43,17 @@ int main()
         return 1;
     }
     printf("Reading file...\n");
-	char filename_A[] = "../dataset/a.txt"; // å­¦ç”Ÿä¿¡æ¯æ–‡ä»¶
-	char filename_B[] = "../dataset/b.txt"; // æˆç»©ä¿¡æ¯æ–‡ä»¶
-	// readStudentsFromFile(filename_A, pStu); // è°ƒç”¨å‡½æ•°è¯»å–æ–‡ä»¶ // å› ä¸ºå½•å…¥æˆç»©ä¿¡æ¯æ—¶éœ€è¦å…ˆè¯»å–å­¦ç”Ÿä¿¡æ¯ï¼Œæ‰€ä»¥ä¸åœ¨è¿™é‡Œè°ƒç”¨
-	// å½•å…¥æˆç»©ä¿¡æ¯
-	printf("å½•å…¥æˆç»©ä¿¡æ¯...\n");
-	addScoreRecord(filename_A, filename_B, pStu); // è°ƒç”¨å‡½æ•°å½•å…¥æˆç»©ä¿¡æ¯
+	char filename_A[] = "../dataset/a.txt"; // Ñ§ÉúĞÅÏ¢´æ´¢µØÖ·
+	char filename_B[] = "../dataset/b.txt"; // ³É¼¨ĞÅÏ¢´æ´¢µØÖ·
+	addScoreRecord(filename_A, filename_B, pStu); // Â¼ÈëÑ§Éú³É¼¨
 
-    free(pStu); // é‡Šæ”¾åŠ¨æ€åˆ†é…çš„å†…å­˜
+    free(pStu); // ÊÍ·ÅÄÚ´æ
 	return 0;
 }
 
 int readStudentsFromFile(char* FileName, Student* pStu)
 {
-	/**/
-	FILE* fp; // æ–‡ä»¶æŒ‡é’ˆ
+	FILE* fp; // ÎÄ¼şÖ¸Õë
 	fp = fopen(FileName, "r");
 	if (fp == NULL)
 	{
@@ -65,19 +61,19 @@ int readStudentsFromFile(char* FileName, Student* pStu)
 		exit(0);
 	}
 
-	/*è·³è¿‡ç¬¬ä¸€è¡Œ*/ 
-	while(fgetc(fp) != '\n'); // è¯»åˆ°ç¬¬ä¸€ä¸ªæ¢è¡Œç¬¦ä¸ºæ­¢
+	/*Ìø¹ı±íÍ·ĞÅÏ¢*/ 
+	while(fgetc(fp) != '\n'); // Ìø¹ıµÚÒ»ĞĞ
 
-	/*è¯»å–æ•°æ®*/
+	/*¶ÁÈëµ½Ñ§ÉúÊı×éÖĞ*/
 	int i = 0;
-	while (fscanf(fp, "%s %s %s %s %s\n", pStu[i].id, pStu[i].name, pStu[i].sex, pStu[i].room, pStu[i].phone) == 5) // ç¡®ä¿æ¯è¡Œè¯»å–äº†5ä¸ªå­—ç¬¦ä¸²
+	while (fscanf(fp, "%s %s %s %s %s\n", pStu[i].id, pStu[i].name, pStu[i].sex, pStu[i].room, pStu[i].phone) == 5) 
 	{
 
-		i++; // è®¡æ•°ä¸€å…±è¯»å–äº†å¤šå°‘è¡Œæ•°æ®
+		i++; // Ã¿¶ÁÈ¡Ò»ÃûÑ§ÉúµÄĞÅÏ¢¼ÆÊı¼ÓÒ»
 	}
 	fclose(fp);
 
-	/*è¾“å‡ºæ•°æ®    --->    ç”¨äºæµ‹è¯•*/
+	/*´òÓ¡³öÑ§ÉúµÄĞÅÏ¢*/
 	int sum = i;
 	for (i = 0; i < sum; i++)
 	{
@@ -87,32 +83,29 @@ int readStudentsFromFile(char* FileName, Student* pStu)
 	return sum;
 }
 
-// æ£€æŸ¥å­¦å·æ˜¯å¦å­˜åœ¨
+// ¼ì²éÑ§ºÅĞÅÏ¢ÊÇ·ñ´æÔÚÓÚÑ§ÉúĞÅÏ¢±íÖĞ
 int checkStudentId(Student students[], int count, const char *id) 
 {
     for (int i = 0; i < count; i++) {
         if (strcmp(students[i].id, id) == 0) {
-            return 1; // å­˜åœ¨
+            return 1; // ´æÔÚ
         }
     }
-    return 0; // ä¸å­˜åœ¨
+    return 0; // ²»´æÔÚ
 }
 
-// è®¡ç®—ç»¼åˆæˆç»©
+// ¼ÆËã×ÛºÏ³É¼¨
 float calculateTotalScore(float usual, float lab, float exam) 
 {
-    // è®¡ç®—æ–¹å¼ï¼šé¦–å…ˆåˆ¤æ–­æ˜¯å¦å­˜åœ¨å®éªŒæˆç»©ï¼ˆ-1ï¼‰ï¼šè‹¥æœ‰å¹³æ—¶15% + å®éªŒ15% + å·é¢70%ï¼›è‹¥æ— å¹³æ—¶30% + å·é¢70%
 	if(lab != -1) 
 	{
 		return usual * 0.15 + lab * 0.15 + exam * 0.7;
 	}
-	// è‹¥æ— å®éªŒæˆç»©
     return usual * 0.3 + exam * 0.7;
 }
 
-// è®¡ç®—å®å¾—å­¦åˆ†ï¼šé‡‡ç”¨ç­‰çº§å­¦åˆ†åˆ¶
+// ²ÉÓÃµÈ¼¶Ñ§·ÖÖÆ
 int calculateCredits(float credit, float totalScore) {	
-	// è®¡ç®—æ–¹å¼ï¼šç»¼åˆæˆç»© >= 60 åˆ†ï¼Œå­¦åˆ† = 2ï¼›ç»¼åˆæˆç»© >= 80 åˆ†ï¼Œå­¦åˆ† = 3ï¼›å¦åˆ™å­¦åˆ† = 0
 	if (totalScore >= 90) {
 		return credit * 1;
 	} else if (totalScore >= 80) {
@@ -123,75 +116,86 @@ int calculateCredits(float credit, float totalScore) {
 		return credit * 0.6;
 	}
 	else {
-		return 0; // ä¸åŠæ ¼
+		return 0; 
 	}
 	return -1;
 }
 
-// æ·»åŠ æˆç»©è®°å½•åˆ°b.txt
+// Â¼Èë
 void addScoreRecord(char *FileName_A, char* FileName_B, Student *student) 
 {
     int studentCount = readStudentsFromFile(FileName_A, student);
     
     if (studentCount == 0) {
-        printf("æ²¡æœ‰å­¦ç”Ÿä¿¡æ¯ï¼Œè¯·å…ˆåœ¨ %s ä¸­æ·»åŠ å­¦ç”Ÿæ•°æ®\n", FileName_A);
+        printf("Ã»ÓĞÑ§ÉúĞÅÏ¢£¬ÇëÏÈÔÚ %s ÖĞÌí¼ÓÑ§ÉúÊı¾İ\n", FileName_A);
         return;
     }
 
     Grades grades;
     char id[20];
     
+    // Ğ´ÈëÎÄ¼ş
+    FILE *file = fopen(FileName_B, "a+"); 
+    if (file == NULL) {
+        printf("ÎŞ·¨´ò¿ªÎÄ¼ş %s\n", FileName_B);
+        return;
+    }
+
+    // µ±ÎÄ¼şÎª¿ÕÊ±Ìí¼Ó±íÍ·
+    fseek(file, 0, SEEK_END);
+
+    if (ftell(file) == 0) {
+        fprintf(file, "Ñ§ºÅ ¿Î³Ì±àºÅ ¿Î³ÌÃû³Æ Ñ§·Ö Æ½Ê±³É¼¨ ÊµÑé³É¼¨ ¾íÃæ³É¼¨ ×ÛºÏ³É¼¨\n");
+        fseek(file, 0, SEEK_END);
+    }
+
     while (1) {
-        printf("è¯·è¾“å…¥å­¦å·ï¼ˆè¾“å…¥0é€€å‡ºï¼‰ï¼š");
+        printf("ÇëÊäÈëÑ§ºÅ£¨ÊäÈë0ÍË³ö£©£º");
         scanf("%s", id);
         
         if (strcmp(id, "0") == 0) break;
         
-        // æ£€æŸ¥å­¦å·æ˜¯å¦å­˜åœ¨
+        // ¼ì²éÑ§ºÅÊÇ·ñ´æÔÚ
         if (!checkStudentId(student, studentCount, id)) {
-            printf("é”™è¯¯ï¼šè¯¥å­¦å·ä¸å­˜åœ¨äº %s ä¸­ï¼\n", FileName_A);
+            printf("´íÎó£º¸ÃÑ§ºÅ²»´æÔÚÓÚ %s ÖĞ£¡\n", FileName_A);
             continue;
         }
         
         strcpy(grades.id, id);
         
-        printf("è¯·è¾“å…¥è¯¾ç¨‹ç¼–å·ï¼š");
+        printf("ÇëÊäÈë¿Î³Ì±àºÅ£º");
         scanf("%s", grades.courseId);
         
-        printf("è¯·è¾“å…¥è¯¾ç¨‹åç§°ï¼š");
+        printf("ÇëÊäÈë¿Î³ÌÃû³Æ£º");
         scanf("%s", grades.courseName);
         
-        printf("è¯·è¾“å…¥å­¦åˆ†ï¼š");
+        printf("ÇëÊäÈëÑ§·Ö£º");
         scanf("%d", &grades.credits);
         
-        printf("è¯·è¾“å…¥å¹³æ—¶æˆç»©ï¼š");
+        printf("ÇëÊäÈëÆ½Ê±³É¼¨£º");
         scanf("%f", &grades.usualScore);
         
-        printf("è¯·è¾“å…¥å®éªŒæˆç»©ï¼š");
+        printf("ÇëÊäÈëÊµÑé³É¼¨£º");
         scanf("%f", &grades.labScore);
         
-        printf("è¯·è¾“å…¥å·é¢æˆç»©ï¼š");
+        printf("ÇëÊäÈë¾íÃæ³É¼¨£º");
         scanf("%f", &grades.examScore);
         
         // è®¡ç®—ç»¼åˆæˆç»©
         grades.totalScore = calculateTotalScore(grades.usualScore, grades.labScore, grades.examScore);
         
-        // å†™å…¥æ–‡ä»¶
-        FILE *file = fopen(FileName_B, "a");
+        
         if (file == NULL) {
-            printf("æ— æ³•æ‰“å¼€æ–‡ä»¶ %s\n", FileName_B);
+            printf("ÎŞ·¨´ò¿ªÎÄ¼ş %s\n", FileName_B);
             return;
         }
-        // æ£€æŸ¥æ–‡ä»¶æ˜¯å¦ä¸ºç©ºï¼ˆé¦–æ¬¡åˆ›å»ºæ—¶æ·»åŠ è¡¨å¤´ï¼‰
-		// if (ftell(file) == 0) {
-		// 	fprintf(file, "å­¦å· è¯¾ç¨‹ç¼–å· è¯¾ç¨‹åç§° å­¦åˆ† å¹³æ—¶æˆç»© å®éªŒæˆç»© å·é¢æˆç»© ç»¼åˆæˆç»©\n");
-		// }
+        
         fprintf(file, "%s %s %s %d %.1f %.1f %.1f %.1f\n",
                 grades.id, grades.courseId, grades.courseName, 
-                grades.credits, grades.usualScore, grades.labScore,
+                calculateCredits(grades.credits,grades.totalScore), grades.usualScore, grades.labScore,
                 grades.examScore, grades.totalScore);
         
         fclose(file);
-        printf("æˆç»©è®°å½•æ·»åŠ æˆåŠŸï¼\n");
+        printf("³É¼¨¼ÇÂ¼Ìí¼Ó³É¹¦£¡\n");
     }
 }
