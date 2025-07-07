@@ -49,7 +49,36 @@ We want to enhance our computer techniques and personal programming abilities in
 （1）数据录入功能：对b.txt进行数据录入，只录入每个学生的学号、课程编号、课程名称、学分、平时成绩、实验成绩、卷面成绩共7个数据，综合成绩、学分由程序根据条件自动运算。
 C语言实现，如何保证数据录入时，该生已经在a.txt中？
 ```
-**C语言乱码的祸根：**c语言的运行程序是调用的cmd.exe而window的cmd的编码默认为936也就是gb2312也叫(GBK)。\n\nVS Code默认文件编码为 UTF-8，生成的可执行文件也是UTF-8编码的，但是系统编码为 GB2312，所以程序中的中文在显示的时候出现了问题。因此，我们未来只要是与C语言编写的代码文件，包括C语言写入读出的文件统一使用 GB2312 中文编码格式。
+**C语言乱码的祸根**：c语言的运行程序是调用的cmd.exe而window的cmd的编码默认为936也就是gb2312也叫(GBK)。\n\nVS Code默认文件编码为 UTF-8，生成的可执行文件也是UTF-8编码的，但是系统编码为 GB2312，所以程序中的中文在显示的时候出现了问题。因此，我们未来只要是与C语言编写的代码文件，包括C语言写入读出的文件统一使用 GB2312 中文编码格式。
+#### 步骤三：查询功能
+使用豆包优化了学生信息查询功能，同时支持学生学号和姓名的查询方式。使用的Prompt如下:
+```C
+// 按学号或姓名查询学生基本信息
+void queryStudentById() {
+    char id[20];
+    printf("请输入要查询的学号(或姓名)：");
+    scanf("%s", id);
+    
+    Student students[MAX_STUDENTS];
+    int studentCount = readStudentsFromFile(FILENAME_A, students);
+    int found = 0;
+    for (int i = 0; i < studentCount; i++) {
+        if (strcmp(students[i].id, id) == 0) {
+            printf("学号：%s\n", students[i].id);
+            printf("姓名：%s\n", students[i].name);
+            printf("性别：%s\n", students[i].sex);
+            printf("宿舍号：%s\n", students[i].room);
+            printf("电话号码：%s\n", students[i].phone);
+            found = 1;
+            break;
+        }
+    }
+    
+    if (!found) {
+        printf("未找到该学号的学生信息\n");
+    }
+} //实现更加智能的函数
+```
 
 ### 项目二：出勤管理系统
 
