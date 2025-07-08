@@ -39,9 +39,10 @@ float calculateTotalScore(float usual, float lab, float exam);
 float calculateCredits(float credit, float totalScore);
 void addGradesRecord(char *FileName_A, char* FileName_B, Student *student);
 int readGradesFromFile(char *FileName, Grades *pGrd);
-void queryStudentSmart() ;
-void queryStudentsByDorm() ;
-void queryScoresById() ;
+void queryStudentSmart();
+void queryStudentsByDorm();
+void queryScoresById();
+void deleteStudent();
 
 // 显示主菜单
 void showMenu() {
@@ -49,6 +50,7 @@ void showMenu() {
     printf("L. 学生成绩数据录入\n");
     printf("A. 学生基本信息查询\n");
     printf("B. 学生成绩信息查询\n");
+    printf("D. 学生信息删除\n");
     printf("Q. 退出系统\n");
     printf("请选择操作：");
 }
@@ -76,6 +78,25 @@ void showScoreMenu() {
     printf("0. 返回上一级\n");
     printf("1. 按学号查询所有课程成绩\n");
     printf("请选择操作：");
+}
+
+// 显示删除子菜单
+void deleteStudentMenU(){
+    printf("\n--- 学生信息删除 ---\n");
+    printf("0. 返回上一级\n");
+    printf("1. 按学号删除某个学生的全部信息\n");
+    printf("请选择操作：");
+}
+
+// 显示排序子菜单
+void showSortMenu() {
+    printf("\n--- 学生成绩排序 ---");
+    printf("\n1. 按综合成绩升序排列");
+    printf("\n2. 按综合成绩降序排列");
+    printf("\n3. 按课程学分升序排列");
+    printf("\n4. 按课程学分降序排列");
+    printf("\n5. 返回上一级");
+    printf("\n请选择操作：");
 }
 
 // 主函数
@@ -153,6 +174,24 @@ int main()
                     }
                 }
                 break;
+
+            case 'D':
+            case 'd':
+                while(1){
+                    deleteStudentMenU();
+                    scanf(" %c", &choice);
+
+                    switch(choice){
+                        case '1':
+                            deleteStudent();
+                            break;
+                        case '0':
+                            goto MAIN_MENU;
+                        default:
+                            printf("无效选择，请重新输入\n");
+                            getchar();getchar();getchar();
+                    }
+                }
                 
             case 'Q':
             case 'q':
@@ -482,4 +521,129 @@ void queryScoresById()
         printf("未找到该学生的成绩记录\n");
     }
 }
+
+
+// 删除学生及其成绩信息
+void deleteStudent() 
+{
+    char id[20];
+    printf("请输入要删除的学生学号：");
+    scanf("%s", id);
+
+    // 读取学生文件
+    Student students[MAX_STUDENTS];
+    int count = readStudentsFromFile(FILENAME_A,students);
+    if (count == 0) {
+        printf("没有学生信息可删除\n");
+        return;
+    }
+
+    // 查找学生
+    int found = 0;
+    for (int i = 0; i < count; i++) {
+        if (strcmp(students[i].id, id) == 0) {
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("未找到学号为 %s 的学生\n", id);
+        return;
+    }
+
+    // 确认删除
+    char confirm;
+    printf("确定要删除学号为 %s 的学生及其所有成绩吗？(y/n) ", id);
+    scanf(" %c", &confirm);
+    if (confirm != 'y' && confirm != 'Y') {
+        printf("已取消删除操作\n");
+        return;
+    }
+
+    // 1. 从a.txt中删除学生
+    FILE *tempFile = fopen("temp_a.txt", "w");
+    if (tempFile == NULL) {
+        printf("无法创建临时文件\n");
+        return;
+    }
+
+    for (int i = 0; i < count; i++) {
+        if (strcmp(students[i].id, id) != 0) {
+            // 写入除要删除学生外的所有记录
+            fprintf(tempFile, "%s %s %s %s %s\n",
+                    students[i].id,
+                    students[i].name,
+                    students[i].sex,
+                    students[i].room,
+                    students[i].phone);
+        }
+    }
+    fclose(tempFile);
+
+    // 替换原文件
+    remove(FILENAME_A);
+    rename("temp_a.txt", FILENAME_A);
+
+    // 2. 从b.txt中删除对应成绩
+    Grades scores[MAX_Grades];
+    int scoreCount = readGradesFromFile(FILENAME_B, scores);
+    
+    tempFile = fopen("temp_b.txt", "w");
+    if (tempFile == NULL) {
+        printf("无法创建临时文件\n");
+        return;
+    }
+
+    // 写入表头
+    fprintf(tempFile, "学号 课程编号 课程名称 学分 平时成绩 实验成绩 卷面成绩 综合成绩\n");
+
+    for (int i = 0; i < scoreCount; i++) {
+        if (strcmp(scores[i].id, id) != 0) {
+            // 写入除要删除学生外的所有成绩记录
+            fprintf(tempFile, "%s %s %s %.1f %.1f %.1f %.1f %.1f\n",
+                    scores[i].id,
+                    scores[i].courseId,
+                    scores[i].courseName,
+                    scores[i].credits,
+                    scores[i].usualScore,
+                    scores[i].labScore,
+                    scores[i].examScore,
+                    scores[i].totalScore);
+        }
+    }
+    fclose(tempFile);
+
+    // 替换原文件
+    remove(FILENAME_B);
+    rename("temp_b.txt", FILENAME_B);
+
+    printf("学号为 %s 的学生及其所有成绩已成功删除\n", id);
+}
+
+
+// 按综合成绩升序
+int compareTotalScoreAsc(const void *a, const void *b) {
+    Grades *scoreA = (Grades *)a;
+    Grades *scoreB = (Grades *)b;
+    return (scoreA->totalScore - scoreB->totalScore) * 100; // 乘以100避免浮点数误差
+}
+
+// 按综合成绩降序
+int compareTotalScoreDesc(const void *a, const void *b) {
+    return compareTotalScoreAsc(b, a); // 反转参数顺序实现降序
+}
+
+// 按学分升序
+int compareCreditsAsc(const void *a, const void *b) {
+    Grades *scoreA = (Grades *)a;
+    Grades *scoreB = (Grades *)b;
+    return scoreA->credits - scoreB->credits;
+}
+
+// 按学分降序
+int compareCreditsDesc(const void *a, const void *b) {
+    return compareCreditsAsc(b, a); // 反转参数顺序实现降序
+}
+
 
