@@ -1,0 +1,4 @@
+1|admin|admin123|1
+2|manager|manager123|2
+3|sales1|sales123|3
+4|sales2|sales456|3
