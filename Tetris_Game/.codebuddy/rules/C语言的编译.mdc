@@ -1,0 +1,9 @@
+---
+description: 
+alwaysApply: true
+enabled: true
+updatedAt: 2026-02-11T06:34:08.386Z
+provider: 
+---
+
+C语言实现的程序需要写编译的代码，这部分代码统一写入到compile.bat这样的文件中去，不要写一个文件夹下的C代码是关联的，因此它们可以使用一个文件进行统一编译。

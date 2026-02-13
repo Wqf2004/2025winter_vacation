@@ -1,11 +1,11 @@
 @echo off
 chcp 65001 >nul
 echo =========================================
-echo   俄罗斯方块 - PyQt5桌面版
+echo   TETRIS_Game pyqt5
 echo =========================================
 echo.
 
-echo 启动游戏...
+echo start...
 python main.py
 
 pause

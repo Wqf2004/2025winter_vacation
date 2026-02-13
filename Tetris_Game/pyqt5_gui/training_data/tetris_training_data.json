@@ -1,0 +1,12 @@
+{
+  "metadata": {
+    "stage": "static",
+    "progress_ratio": 0.0,
+    "total_human_decisions": 0,
+    "human_rejected_ai": 0,
+    "training_rounds": 0,
+    "network_trained": false
+  },
+  "samples": [],
+  "total_samples": 0
+}
